@@ -12,6 +12,8 @@ export default function ExperiencePage({ params }: { params: Promise<{ id: strin
   const router = useRouter();
   const [student, setStudent] = useState<Student | null>(null);
   const [templateId, setTemplateId] = useState<number | null>(null);
+  const [notFound, setNotFound] = useState(false);
+  const [key, setKey] = useState(0);
   
   const resolvedParams = use(params);
   
@@ -20,14 +22,33 @@ export default function ExperiencePage({ params }: { params: Promise<{ id: strin
     const found = students.find(s => s.id === id);
     
     if (!found) {
-      router.push("/");
+      setNotFound(true);
       return;
     }
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStudent(found);
     setTemplateId(getRandomTemplateId());
-  }, [resolvedParams.id, router]);
+  }, [resolvedParams.id, key]);
+
+  if (notFound) {
+    return (
+      <div className="min-h-[100svh] bg-[#050507] text-white flex flex-col items-center justify-center p-8 font-sans relative overflow-hidden">
+        <div className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
+        <div className="glass-card text-center z-10 relative shadow-[0_0_80px_rgba(255,255,255,0.05)] border-white/10">
+          <h1 className="heading-fluid font-semibold mb-4 tracking-tight uppercase text-2xl">Identity Not Found</h1>
+          <p className="subtitle-fluid text-white/60 mb-8 max-w-sm mx-auto">
+            The requested student record could not be located in our system.
+          </p>
+          <button
+            onClick={() => router.push("/")}
+            className="glass-button text-sm uppercase tracking-widest"
+          >
+            RETURN HOME
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!student || !templateId) {
     return (
@@ -41,27 +62,26 @@ export default function ExperiencePage({ params }: { params: Promise<{ id: strin
     );
   }
 
-  // Render the selected template, or a fallback if not yet implemented
+  // Render the selected template
   const TemplateComponent = templates[templateId];
 
   if (!TemplateComponent) {
-    return (
-      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-8">
-        <h1 className="text-4xl font-bold mb-4">{student.name}</h1>
-        <p className="text-xl text-white/60 mb-8">{student.usn}</p>
-        <div className="border border-white/20 p-6 rounded-2xl max-w-md text-center">
-          <p>Template {templateId} selected.</p>
-          <p className="text-sm text-white/40 mt-2">(Templates 1-20 are being built)</p>
-        </div>
+    return null;
+  }
+
+  return (
+    <div className="relative w-full h-full">
+      <TemplateComponent key={key} student={student} />
+      
+      {/* Experience Again Button overlay */}
+      <div className="absolute top-6 right-6 z-50">
         <button
-          onClick={() => router.push("/")}
-          className="mt-12 px-8 py-3 rounded-full border border-white/20 hover:bg-white/10 transition-colors tracking-widest text-sm"
+          onClick={() => setKey(k => k + 1)}
+          className="px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-xs font-medium text-white/80 hover:text-white hover:bg-white/10 hover:scale-105 transition-all uppercase tracking-widest shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
         >
           EXPERIENCE AGAIN
         </button>
       </div>
-    );
-  }
-
-  return <TemplateComponent student={student} />;
+    </div>
+  );
 }

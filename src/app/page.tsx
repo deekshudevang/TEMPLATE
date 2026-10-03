@@ -21,7 +21,7 @@ export default function Home() {
     setIsSearching(true);
 
     const query = usn.trim().toLowerCase();
-    const found = students.filter(s => s.usn.toLowerCase() === query);
+    const found = students.filter(s => s.usn.toLowerCase() === query || s.id.toString() === query);
 
     if (found.length === 0) {
       setTimeout(() => {
@@ -48,13 +48,18 @@ export default function Home() {
   return (
     <div className="relative min-h-[100svh] overflow-hidden bg-[#050507] text-white flex flex-col items-center justify-center p-4 font-sans">
       {/* Background Layers */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-black">
         <motion.div
-          animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.4, 0.3] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05)_0%,transparent_50%)]"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-[radial-gradient(circle_at_center,rgba(100,50,255,0.15)_0%,transparent_60%)] blur-[80px]"
         />
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
+        <motion.div
+          animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: 2 }}
+          className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,150,255,0.15)_0%,transparent_60%)] blur-[80px]"
+        />
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')" }}></div>
       </div>
 
       <AnimatePresence mode="wait">
@@ -67,12 +72,13 @@ export default function Home() {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="z-10 w-full"
           >
-            <div className="glass-card text-center relative">
-              <h1 className="heading-fluid font-semibold tracking-tight mb-2">
-                Fresher Experience
+            <div className="glass-card text-center relative shadow-[0_0_80px_rgba(255,255,255,0.05)] border-white/10 before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/5 before:to-transparent before:rounded-[inherit] before:pointer-events-none overflow-hidden">
+              <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+              <h1 className="heading-fluid font-semibold tracking-tight mb-2 text-2xl sm:text-3xl uppercase">
+                Welcome To Your Next Chapter
               </h1>
               <p className="subtitle-fluid text-white/60 mb-8 max-w-sm mx-auto">
-                Enter your USN or Student ID to begin your digital ceremony.
+                Every fresher has a story. Let's begin yours.
               </p>
 
               <form onSubmit={handleSearch} className="flex flex-col gap-4">
@@ -115,7 +121,7 @@ export default function Home() {
                       className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full"
                     />
                   ) : (
-                    "BEGIN JOURNEY"
+                    "BEGIN MY JOURNEY →"
                   )}
                 </button>
               </form>
@@ -140,7 +146,7 @@ export default function Home() {
                     className="glass-button text-left px-6 py-4 flex flex-col items-start min-h-[auto]"
                   >
                     <span className="font-bold text-lg">{student.name}</span>
-                    <span className="text-black/60 text-sm font-mono">{student.usn}</span>
+                    <span className="text-black/60 text-sm font-mono">USN ending in ••{student.usn.length > 3 ? student.usn.slice(-3) : student.usn}</span>
                   </button>
                 ))}
               </div>

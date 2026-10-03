@@ -19,15 +19,9 @@ export const TemplateRegistry: Record<string, React.ComponentType<{ student: { i
   "template-13": dynamic(() => import('@/templates/template-13/Template13').catch(() => () => null), { ssr: false }),
   "template-14": dynamic(() => import('@/templates/template-14/Template14').catch(() => () => null), { ssr: false }),
   "template-15": dynamic(() => import('@/templates/template-15/Template15').catch(() => () => null), { ssr: false }),
+  "template-16": dynamic(() => import('@/templates/template-16/Template16').catch(() => () => null), { ssr: false }),
+  "template-17": dynamic(() => import('@/templates/template-17/Template17').catch(() => () => null), { ssr: false }),
+  "template-18": dynamic(() => import('@/templates/template-18/Template18').catch(() => () => null), { ssr: false }),
+  "template-19": dynamic(() => import('@/templates/template-19/Template19').catch(() => () => null), { ssr: false }),
+  "template-20": dynamic(() => import('@/templates/template-20/Template20').catch(() => () => null), { ssr: false }),
 };
-
-// Helper function to assign a template based on the student's ID
-// This ensures that a given student ALWAYS gets the same template, but 
-// distributes them evenly across all 15 experiences.
-export function getTemplateForStudent(studentId: number): string {
-  // Use modulo 15 to map to 1-15 evenly.
-  // Using a stable formula based on ID ensures the template never randomly changes
-  const templateIndex = (studentId % 15) + 1;
-  const formattedIndex = templateIndex.toString().padStart(2, '0'); // "01", "02", etc.
-  return `template-${formattedIndex}`;
-}
