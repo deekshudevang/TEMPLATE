@@ -1,6 +1,9 @@
 {
-  "name": "template",
-  "version": "0.1.0",
+  "name": "fresher-welcome-cards",
+  "version": "1.0.0",
+  "description": "A 3D personalized invitation app for freshers",
+  "keywords": ["nextjs", "threejs", "react-three-fiber", "invitation", "3d"],
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "next dev",

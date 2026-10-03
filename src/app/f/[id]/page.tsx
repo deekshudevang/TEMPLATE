@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useState, use, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { students } from "@/data/students";
+import type { Student } from "@/data/students";
 import { getRandomTemplateId } from "@/lib/template-engine";
 import { motion } from "framer-motion";
 
@@ -10,19 +10,33 @@ import { templates } from "@/templates";
 
 export default function ExperiencePage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const [templateId, setTemplateId] = useState<number | null>(null);
+  const [templateId, setTemplateId] = useState<number | null>(() => getRandomTemplateId());
   const [key, setKey] = useState(0);
   
   const resolvedParams = use(params);
   const id = parseInt(resolvedParams.id, 10);
-  const found = students.find(s => s.id === id);
   
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTemplateId(getRandomTemplateId());
-  }, []);
+  const [found, setFound] = useState<Student | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  if (!found) {
+  useEffect(() => {
+    fetch(`/api/students/${id}`)
+      .then(res => {
+        if (!res.ok) throw new Error("Not found");
+        return res.json();
+      })
+      .then(data => {
+        setFound(data.student);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError(true);
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (error) {
     return (
       <div className="min-h-[100svh] bg-[#050507] text-white flex flex-col items-center justify-center p-8 font-sans relative overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
@@ -33,7 +47,7 @@ export default function ExperiencePage({ params }: { params: Promise<{ id: strin
           </p>
           <button
             onClick={() => router.push("/")}
-            className="glass-button text-sm uppercase tracking-widest"
+            className="glass-button text-sm uppercase tracking-widest px-6 py-3 border border-white/20 rounded-full"
           >
             RETURN HOME
           </button>
@@ -42,7 +56,7 @@ export default function ExperiencePage({ params }: { params: Promise<{ id: strin
     );
   }
 
-  if (!found || !templateId) {
+  if (loading || !found || !templateId) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <motion.div
