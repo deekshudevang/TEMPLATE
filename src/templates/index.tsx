@@ -1,9 +1,20 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { Student } from "@/data/students";
-import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { Canvas } from "@react-three/fiber";
+import { 
+  Text, 
+  Environment, 
+  ContactShadows, 
+  PresentationControls, 
+  Float,
+  Sparkles,
+  Stars,
+  MeshTransmissionMaterial,
+  RoundedBox
+} from "@react-three/drei";
 
 interface TemplateProps {
   student: Student;
@@ -15,284 +26,437 @@ const BackButton = ({ invert = false }: { invert?: boolean }) => {
     <button
       onClick={() => router.push("/")}
       className={`absolute top-[max(24px,env(safe-area-inset-top))] left-6 z-50 transition-colors text-xs tracking-widest uppercase flex items-center gap-2 ${
-        invert ? "text-black/50 hover:text-black" : "text-white/50 hover:text-white"
-      }`}
+        invert ? "text-black/70 hover:text-black" : "text-white/70 hover:text-white"
+      } font-sans drop-shadow-md`}
     >
       <span>←</span> EXIT
     </button>
   );
 };
 
-// TEMPLATE 01: Grand Ceremony (Phase 18)
+interface BaseCardProps {
+  student: Student;
+  title: string;
+  material: React.ReactNode;
+  textColor?: string;
+  accentColor?: string;
+  extraNodes?: React.ReactNode;
+}
+
+const BaseCard = ({ 
+  student, 
+  title, 
+  material, 
+  textColor = "#ffffff", 
+  accentColor = "#D4AF37",
+  extraNodes 
+}: BaseCardProps) => {
+  return (
+    <PresentationControls 
+      global 
+      rotation={[0, 0, 0]} 
+      polar={[-0.1, 0.1]} 
+      azimuth={[-0.3, 0.3]} 
+    >
+      <Float rotationIntensity={0.2} floatIntensity={0.5} speed={1.5}>
+        <RoundedBox args={[3.2, 4.8, 0.08]} radius={0.05} smoothness={4}>
+          {material}
+        </RoundedBox>
+
+        <Text
+          position={[0, 1.4, 0.041]}
+          fontSize={0.2}
+          color={accentColor}
+          anchorX="center"
+          anchorY="middle"
+          letterSpacing={0.2}
+          outlineWidth={0.005}
+          outlineColor={accentColor}
+        >
+          {title.toUpperCase()}
+        </Text>
+
+        <mesh position={[0, 0.8, 0.041]}>
+          <planeGeometry args={[2, 0.008]} />
+          <meshBasicMaterial color={accentColor} transparent opacity={0.6} />
+        </mesh>
+
+        <Text
+          position={[0, 0.3, 0.041]}
+          fontSize={0.12}
+          color={textColor}
+          anchorX="center"
+          anchorY="middle"
+          maxWidth={2.2}
+          textAlign="center"
+          lineHeight={1.6}
+          letterSpacing={0.05}
+        >
+          YOU ARE CORDIALLY INVITED TO THE{"\n"}FRESHERS&apos; WELCOME CEREMONY
+        </Text>
+
+        <Text
+          position={[0, -0.6, 0.041]}
+          fontSize={0.32}
+          color={textColor}
+          anchorX="center"
+          anchorY="middle"
+          maxWidth={2.8}
+          textAlign="center"
+          outlineWidth={0.01}
+          outlineColor={textColor}
+        >
+          {student.name}
+        </Text>
+
+        <Text
+          position={[0, -1.3, 0.041]}
+          fontSize={0.14}
+          color={accentColor}
+          anchorX="center"
+          anchorY="middle"
+          letterSpacing={0.15}
+        >
+          {student.usn}
+        </Text>
+
+        {extraNodes}
+      </Float>
+    </PresentationControls>
+  );
+};
+
+// 1. Golden Ticket (Matte Black & Gold)
 const T1 = ({ student }: TemplateProps) => (
-  <div className="experience bg-black text-[#D4AF37] flex flex-col justify-center items-center text-center">
+  <div className="w-full h-[100svh] bg-[#050505]">
     <BackButton />
-    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }} className="experience-content border-y border-[#D4AF37]/30 py-12 md:py-24 relative">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-full bg-gradient-to-b from-transparent via-[#D4AF37]/20 to-transparent" />
-      <p className="text-xs md:text-sm tracking-[0.4em] uppercase opacity-60 mb-6 font-serif">Welcome</p>
-      <h1 className="student-name font-serif mb-6">{student.name}</h1>
-      <p className="usn font-serif opacity-80 tracking-widest">{student.usn}</p>
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 10, 5]} intensity={1.5} />
+      <Environment preset="city" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="Golden Ticket"
+          material={<meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} />}
+          accentColor="#D4AF37"
+          textColor="#ffffff"
+        />
+      </Suspense>
+      <ContactShadows position={[0, -3, 0]} opacity={0.5} scale={10} blur={2.5} far={4} />
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 02: Cyber Identity (Phase 19)
+// 2. Glassmorphism
 const T2 = ({ student }: TemplateProps) => (
-  <div className="experience bg-zinc-950 text-emerald-400 font-mono flex flex-col justify-center items-center relative">
+  <div className="w-full h-[100svh] bg-gradient-to-br from-indigo-900 to-purple-900">
     <BackButton />
-    <div className="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.05)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20" />
-    <motion.div initial={{ opacity: 0, filter: "brightness(2)" }} animate={{ opacity: 1, filter: "brightness(1)" }} transition={{ duration: 0.8 }} className="experience-content border border-emerald-500/30 p-8 md:p-16 bg-black/40 backdrop-blur-sm relative z-10">
-      <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-emerald-500" />
-      <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-emerald-500" />
-      <p className="text-xs opacity-50 mb-4 uppercase">&gt; IDENTITY_VERIFIED</p>
-      <h1 className="student-name uppercase shadow-[0_0_20px_rgba(16,185,129,0.2)]">{student.name}</h1>
-      <p className="usn mt-6 opacity-70 border-t border-emerald-500/30 pt-4">{student.usn}</p>
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[10, 10, 10]} intensity={1} />
+      <Environment preset="apartment" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="Premium Invite"
+          material={<MeshTransmissionMaterial thickness={0.5} roughness={0.1} transmission={1} ior={1.5} chromaticAberration={0.05} color="#ffffff" />}
+          accentColor="#ffffff"
+          textColor="#f0f0f0"
+        />
+      </Suspense>
+      <mesh position={[-2, -2, -3]}>
+        <sphereGeometry args={[1.5, 32, 32]} />
+        <meshBasicMaterial color="#ff0066" />
+      </mesh>
+      <mesh position={[2, 2, -4]}>
+        <sphereGeometry args={[2, 32, 32]} />
+        <meshBasicMaterial color="#00ffff" />
+      </mesh>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 03: Player One (Phase 20)
+// 3. Cyberpunk
 const T3 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#0B0C10] text-[#66FCF1] flex flex-col justify-center items-center font-sans">
+  <div className="w-full h-[100svh] bg-[#020205]">
     <BackButton />
-    <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", bounce: 0.4 }} className="experience-content text-center">
-      <p className="text-sm font-bold uppercase tracking-widest mb-2 text-[#45A29E]">Level 1 Reached</p>
-      <h1 className="student-name font-black italic uppercase tracking-tighter mb-4" style={{ textShadow: "4px 4px 0px rgba(69, 162, 158, 0.4)" }}>
-        {student.name}
-      </h1>
-      <div className="inline-block bg-[#1F2833] rounded-full px-6 py-2 border border-[#45A29E]/50 mt-4">
-        <p className="usn text-[#C5C6C7] font-mono">{student.usn}</p>
-      </div>
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.2} />
+      <spotLight position={[0, 5, 5]} angle={0.5} penumbra={1} intensity={2} color="#00ff88" />
+      <Environment preset="night" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="Cyber Access"
+          material={<meshStandardMaterial color="#050510" metalness={0.9} roughness={0.1} />}
+          accentColor="#00ff88"
+          textColor="#ffffff"
+        />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 04: Cinematic Story (Phase 21)
+// 4. Pure Chrome
 const T4 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#0a0a0a] text-[#f5f5f5] flex flex-col justify-center items-center relative">
-    <BackButton />
-    <div className="absolute inset-0 bg-black/40 mix-blend-multiply pointer-events-none" />
-    <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.9)] pointer-events-none" />
-    <motion.div initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 2 }} className="experience-content text-center relative z-10">
-      <h1 className="student-name font-serif mb-8 tracking-widest">{student.name}</h1>
-      <div className="w-12 h-[1px] bg-white/50 mx-auto mb-8" />
-      <p className="usn font-serif tracking-[0.2em] opacity-60 uppercase">{student.usn}</p>
-    </motion.div>
+  <div className="w-full h-[100svh] bg-[#d0d0d0]">
+    <BackButton invert />
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.5} />
+      <Environment preset="studio" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="VIP Access"
+          material={<meshStandardMaterial color="#e0e0e0" metalness={1} roughness={0} />}
+          accentColor="#333333"
+          textColor="#111111"
+        />
+      </Suspense>
+      <ContactShadows position={[0, -3, 0]} opacity={0.3} scale={10} blur={2} far={4} color="#000000" />
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 05: Space Explorer (Phase 22)
+// 5. White Pearl
 const T5 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#020014] text-indigo-100 flex flex-col justify-center items-center overflow-hidden">
-    <BackButton />
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-900/20 rounded-full blur-[100px] pointer-events-none" />
-    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.5 }} className="experience-content text-center relative z-10">
-      <p className="text-xs uppercase tracking-[0.5em] text-indigo-300/60 mb-6">Crew Member</p>
-      <h1 className="student-name font-light mb-6 tracking-tight">{student.name}</h1>
-      <p className="usn font-mono opacity-50 tracking-widest">{student.usn}</p>
-    </motion.div>
+  <div className="w-full h-[100svh] bg-[#f8f9fa]">
+    <BackButton invert />
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={1} />
+      <directionalLight position={[-5, 5, 5]} intensity={0.5} color="#ffddf4" />
+      <directionalLight position={[5, -5, 5]} intensity={0.5} color="#ddf4ff" />
+      <Environment preset="dawn" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="Special Guest"
+          material={<meshPhysicalMaterial color="#ffffff" metalness={0.1} roughness={0.1} clearcoat={1} clearcoatRoughness={0.1} iridescence={1} iridescenceIOR={1.5} />}
+          accentColor="#8892b0"
+          textColor="#233554"
+        />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 06: Terminal (Phase 23)
+// 6. Ruby Velvet
 const T6 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#1e1e1e] text-[#d4d4d4] font-mono p-4 md:p-12 flex flex-col justify-start">
+  <div className="w-full h-[100svh] bg-[#1a0505]">
     <BackButton />
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="experience-content mt-20">
-      <p className="mb-2">deeks@system:~$ ./init_fresher.sh</p>
-      <p className="mb-2 text-[#569cd6]">Loading identity matrix...</p>
-      <p className="mb-6 text-[#4ec9b0]">Success.</p>
-      <div className="border-l-2 border-[#569cd6] pl-4 mb-6">
-        <h1 className="text-2xl md:text-5xl font-bold mb-4">{student.name}</h1>
-        <p className="usn text-[#ce9178]">ID: {student.usn}</p>
-      </div>
-      <p className="flex items-center gap-2">deeks@system:~$ <span className="w-2 h-5 bg-[#d4d4d4] animate-pulse" /></p>
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.3} />
+      <directionalLight position={[2, 5, 2]} intensity={1.5} color="#ff4444" />
+      <Environment preset="sunset" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="Honored Guest"
+          material={<meshStandardMaterial color="#4a0404" metalness={0.3} roughness={0.8} />}
+          accentColor="#e5a93c"
+          textColor="#ffeded"
+        />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 07: Elegant Welcome (Phase 24)
+// 7. Amethyst
 const T7 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#f9f9f7] text-[#2c2c2a] flex flex-col justify-center items-center text-center">
-    <BackButton invert />
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: "easeOut" }} className="experience-content">
-      <h1 className="student-name font-serif mb-8 text-[#1a1a18]">{student.name}</h1>
-      <p className="usn font-sans tracking-[0.15em] opacity-60 uppercase">{student.usn}</p>
-    </motion.div>
+  <div className="w-full h-[100svh] bg-[#0a0515]">
+    <BackButton />
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.2} />
+      <Environment preset="city" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="Exclusive Entry"
+          material={<MeshTransmissionMaterial thickness={1} roughness={0.1} transmission={1} ior={1.8} chromaticAberration={0.1} color="#5b2c6f" />}
+          accentColor="#e0e0e0"
+          textColor="#ffffff"
+          extraNodes={<Sparkles count={50} scale={5} size={2} speed={0.4} opacity={0.5} color="#d7bde2" />}
+        />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 08: Arcade (Phase 25)
+// 8. Emerald
 const T8 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#110022] text-[#ff00ff] font-mono flex flex-col justify-center items-center relative">
+  <div className="w-full h-[100svh] bg-[#03150c]">
     <BackButton />
-    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30 mix-blend-overlay" />
-    <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.25)_50%)] bg-[size:100%_4px] pointer-events-none" />
-    <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 100 }} className="experience-content text-center border-4 border-[#00ffff] p-8 md:p-16 bg-[#110022]/80 shadow-[0_0_40px_rgba(0,255,255,0.3)]">
-      <h1 className="student-name uppercase font-black text-[#ffff00] drop-shadow-[0_4px_0_#ff00ff] mb-8">
-        {student.name}
-      </h1>
-      <p className="usn text-white text-xl animate-pulse">P1: {student.usn}</p>
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.3} />
+      <directionalLight position={[5, 10, 2]} intensity={1} />
+      <Environment preset="forest" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="Elite Member"
+          material={<meshPhysicalMaterial color="#0b5345" metalness={0.6} roughness={0.1} clearcoat={1} />}
+          accentColor="#d4af37"
+          textColor="#e8f8f5"
+        />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 09: New Memory (Phase 26)
+// 9. Obsidian
 const T9 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#eaddcf] flex flex-col justify-center items-center">
-    <BackButton invert />
-    <motion.div initial={{ rotate: -5, y: 50, opacity: 0 }} animate={{ rotate: 2, y: 0, opacity: 1 }} transition={{ type: "spring", damping: 15 }} className="experience-content max-w-lg bg-[#fdfbf7] p-8 pb-16 md:p-12 md:pb-24 shadow-2xl relative">
-      <div className="w-full aspect-square bg-[#d9cbb8] mb-8" />
-      <h1 className="student-name font-serif italic text-[#3c3024] mb-2">{student.name}</h1>
-      <p className="usn font-sans text-sm text-[#8c7b64]">{student.usn}</p>
-    </motion.div>
+  <div className="w-full h-[100svh] bg-[#080808]">
+    <BackButton />
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.1} />
+      <spotLight position={[0, 10, 0]} intensity={2} angle={0.6} penumbra={1} color="#ff3333" />
+      <Environment preset="night" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="The Initiation"
+          material={<meshStandardMaterial color="#000000" metalness={0.9} roughness={0.05} />}
+          accentColor="#ff3333"
+          textColor="#cccccc"
+        />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 10: Breaking News (Phase 27)
+// 10. Arctic Ice
 const T10 = ({ student }: TemplateProps) => (
-  <div className="experience bg-white text-black p-6 md:p-12">
+  <div className="w-full h-[100svh] bg-[#dbe9f4]">
     <BackButton invert />
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="experience-content mt-16 border-t-4 border-b-2 border-black py-6">
-      <p className="text-xs font-bold uppercase tracking-widest mb-4">The Campus Times</p>
-      <h1 className="student-name font-serif font-black leading-none mb-6">{student.name}</h1>
-      <div className="w-full h-[1px] bg-black/20 mb-6" />
-      <p className="usn font-serif text-xl">{student.usn}</p>
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={1} />
+      <Environment preset="dawn" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="Winter Gala"
+          material={<MeshTransmissionMaterial thickness={2} roughness={0.2} transmission={0.9} ior={1.3} color="#a9cce3" />}
+          accentColor="#154360"
+          textColor="#1b4f72"
+        />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 11: New Face (Phase 28)
+// 11. Midnight Stars
 const T11 = ({ student }: TemplateProps) => (
-  <div className="experience bg-gradient-to-br from-blue-50 to-purple-50 text-slate-800 flex flex-col justify-center items-center">
-    <BackButton invert />
-    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="experience-content max-w-md bg-white rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] p-8 text-center">
-      <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-blue-400 to-purple-400 mx-auto mb-6" />
-      <h1 className="student-name font-bold mb-2 text-3xl">{student.name}</h1>
-      <p className="usn text-slate-500 bg-slate-100 rounded-full px-4 py-1 inline-block mt-2">{student.usn}</p>
-    </motion.div>
+  <div className="w-full h-[100svh] bg-[#020512]">
+    <BackButton />
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.2} />
+      <directionalLight position={[0, 5, 5]} intensity={1} color="#ffffff" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="Starlight Invite"
+          material={<meshStandardMaterial color="#050a1f" metalness={0.5} roughness={0.5} />}
+          accentColor="#85c1e9"
+          textColor="#ffffff"
+        />
+        <Stars radius={50} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 12: AI Identification (Phase 29)
+// 12. Solid Gold
 const T12 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#010a15] text-[#4ea8ff] font-sans flex flex-col justify-center items-center overflow-hidden">
+  <div className="w-full h-[100svh] bg-[#1a1813]">
     <BackButton />
-    <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute w-[80vw] md:w-[600px] aspect-square border border-[#4ea8ff]/20 rounded-full border-dashed" />
-    <motion.div animate={{ rotate: -360 }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }} className="absolute w-[60vw] md:w-[400px] aspect-square border-2 border-[#4ea8ff]/10 rounded-full" />
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="experience-content text-center relative z-10 bg-[#010a15]/80 backdrop-blur-sm p-8 rounded-full">
-      <h1 className="student-name font-light tracking-tight mb-4">{student.name}</h1>
-      <p className="usn font-mono text-sm tracking-widest opacity-80">{student.usn}</p>
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.4} />
+      <Environment preset="apartment" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="The Royal"
+          material={<meshStandardMaterial color="#ffd700" metalness={1} roughness={0.2} />}
+          accentColor="#4a3b00"
+          textColor="#2a2200"
+        />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 13: The Journey (Phase 30)
+// 13. Neon Matrix
 const T13 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#e8efe9] text-[#2c4c3b] flex flex-col justify-center items-center text-center">
-    <BackButton invert />
-    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 2, ease: "easeOut" }} className="experience-content">
-      <h1 className="student-name font-serif mb-8 text-[#1b3326]">{student.name}</h1>
-      <p className="usn font-sans tracking-[0.2em] opacity-70 uppercase">{student.usn}</p>
-    </motion.div>
+  <div className="w-full h-[100svh] bg-black">
+    <BackButton />
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.1} />
+      <directionalLight position={[0, 0, 5]} intensity={1} color="#00ff00" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="System Access"
+          material={<meshBasicMaterial color="#001100" wireframe />}
+          accentColor="#00ff00"
+          textColor="#00cc00"
+        />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 14: Campus Celebration (Phase 31)
+// 14. Holographic
 const T14 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#FF4F00] text-white flex flex-col justify-center items-center text-center">
+  <div className="w-full h-[100svh] bg-[#101015]">
     <BackButton />
-    <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", bounce: 0.6 }} className="experience-content">
-      <h1 className="student-name font-black uppercase italic tracking-tighter mb-4 text-yellow-300 drop-shadow-xl">{student.name}</h1>
-      <div className="bg-white text-[#FF4F00] px-6 py-2 rounded-full inline-block font-bold">
-        <p className="usn">{student.usn}</p>
-      </div>
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.5} />
+      <Environment preset="city" />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="Virtual Event"
+          material={<meshPhysicalMaterial color="#ffffff" metalness={0.1} roughness={0} transmission={0.9} ior={1.1} iridescence={1} iridescenceIOR={1.3} thickness={1} />}
+          accentColor="#ffffff"
+          textColor="#ffffff"
+        />
+      </Suspense>
+      <mesh position={[-2, 1, -2]}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshBasicMaterial color="#ff00ff" />
+      </mesh>
+      <mesh position={[2, -1, -2]}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshBasicMaterial color="#00ffff" />
+      </mesh>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 15: Spotlight (Phase 32)
+// 15. Crimson Matte
 const T15 = ({ student }: TemplateProps) => (
-  <div className="experience bg-black text-white flex flex-col justify-center items-center relative overflow-hidden">
+  <div className="w-full h-[100svh] bg-[#1a1a1a]">
     <BackButton />
-    <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[200vw] md:w-[800px] h-[120%] bg-gradient-to-b from-white/20 via-white/5 to-transparent blur-[40px] pointer-events-none" />
-    <motion.div initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1.5, ease: "circOut" }} className="experience-content text-center relative z-10 mt-32">
-      <h1 className="student-name font-serif mb-6 drop-shadow-2xl">{student.name}</h1>
-      <p className="usn opacity-50 tracking-[0.3em] font-light">{student.usn}</p>
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[5, 5, 5]} intensity={0.5} />
+      <Suspense fallback={null}>
+        <BaseCard 
+          student={student} 
+          title="The Finale"
+          material={<meshStandardMaterial color="#8b0000" metalness={0.1} roughness={0.9} />}
+          accentColor="#ffaaaa"
+          textColor="#ffffff"
+        />
+      </Suspense>
+    </Canvas>
   </div>
 );
 
-// TEMPLATE 16: The Feature (Phase 33)
-const T16 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#f4f4f4] text-[#111] p-6 md:p-16 flex flex-col justify-center">
-    <BackButton invert />
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="experience-content max-w-4xl border-l-4 border-red-600 pl-6 md:pl-12 py-8">
-      <h1 className="student-name font-serif font-black tracking-tight mb-8 leading-[0.9]">{student.name}</h1>
-      <p className="usn font-sans font-bold text-red-600 text-xl tracking-widest">{student.usn}</p>
-    </motion.div>
-  </div>
-);
-
-// TEMPLATE 17: Mystery (Phase 34)
-const T17 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#09090b] text-[#71717a] flex flex-col justify-center items-center text-center">
-    <BackButton />
-    <motion.div initial={{ filter: "blur(20px)", opacity: 0 }} animate={{ filter: "blur(0px)", opacity: 1 }} transition={{ duration: 2.5 }} className="experience-content">
-      <h1 className="student-name font-light tracking-[0.1em] text-[#e4e4e7] mb-8">{student.name}</h1>
-      <p className="usn font-mono text-xs tracking-[0.5em]">{student.usn}</p>
-    </motion.div>
-  </div>
-);
-
-// TEMPLATE 18: Campus Passport (Phase 35)
-const T18 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#2b4c7e] flex flex-col justify-center items-center p-4">
-    <BackButton />
-    <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="experience-content max-w-2xl w-full bg-[#fdfbf7] rounded-xl shadow-2xl overflow-hidden border border-white/20">
-      <div className="bg-[#1a3256] text-white p-4 flex justify-between items-center">
-        <span className="font-bold tracking-widest uppercase text-sm">Official Entry</span>
-        <span className="opacity-50 text-xs">2026</span>
-      </div>
-      <div className="p-8 md:p-12 text-[#2c3e50]">
-        <p className="text-xs uppercase tracking-widest opacity-50 mb-2">Name</p>
-        <h1 className="student-name font-serif font-bold mb-8 text-3xl md:text-5xl">{student.name}</h1>
-        <p className="text-xs uppercase tracking-widest opacity-50 mb-2">ID Number</p>
-        <p className="usn font-mono text-xl">{student.usn}</p>
-      </div>
-    </motion.div>
-  </div>
-);
-
-// TEMPLATE 19: The Energy (Phase 36)
-const T19 = ({ student }: TemplateProps) => (
-  <div className="experience bg-gradient-to-br from-[#FF0055] via-[#FF5500] to-[#FFCC00] text-white flex flex-col justify-center items-center overflow-hidden">
-    <BackButton />
-    <motion.div initial={{ skewY: 10, y: 100, opacity: 0 }} animate={{ skewY: -5, y: 0, opacity: 1 }} transition={{ type: "spring", damping: 12 }} className="experience-content text-center">
-      <h1 className="student-name font-black uppercase leading-none mb-6 drop-shadow-2xl">{student.name}</h1>
-      <div className="bg-black text-white px-8 py-3 transform skew-y-3 inline-block">
-        <p className="usn font-bold tracking-widest">{student.usn}</p>
-      </div>
-    </motion.div>
-  </div>
-);
-
-// TEMPLATE 20: Portal (Phase 37)
-const T20 = ({ student }: TemplateProps) => (
-  <div className="experience bg-[#040014] text-[#d6b4fc] flex flex-col justify-center items-center relative overflow-hidden">
-    <BackButton />
-    <motion.div animate={{ rotate: 360, scale: [1, 1.1, 1] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }} className="absolute w-[150vw] md:w-[800px] aspect-square bg-[conic-gradient(from_0deg,transparent,rgba(168,85,247,0.2),transparent)] rounded-full blur-[20px]" />
-    <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 1.5, ease: "circOut" }} className="experience-content text-center relative z-10 bg-black/40 backdrop-blur-md p-12 rounded-[40px] border border-purple-500/20">
-      <h1 className="student-name font-sans font-semibold tracking-tight mb-4 text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">{student.name}</h1>
-      <p className="usn font-mono tracking-widest opacity-80">{student.usn}</p>
-    </motion.div>
-  </div>
-);
-
-// 20 unique templates mapped
+// 15 unique premium templates mapped
 export const templates: Record<number, React.FC<TemplateProps>> = {
   1: T1, 2: T2, 3: T3, 4: T4, 5: T5,
   6: T6, 7: T7, 8: T8, 9: T9, 10: T10,
   11: T11, 12: T12, 13: T13, 14: T14, 15: T15,
-  16: T16, 17: T17, 18: T18, 19: T19, 20: T20,
 };

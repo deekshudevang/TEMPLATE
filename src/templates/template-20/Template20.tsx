@@ -61,7 +61,8 @@ function Core({ opened, setOpened }: { opened: boolean, setOpened: (v: boolean) 
         meshRef.current.scale.setScalar(THREE.MathUtils.lerp(meshRef.current.scale.x, 0.1, delta * 3));
         ringRef.current.scale.setScalar(THREE.MathUtils.lerp(ringRef.current.scale.x, 5, delta * 2));
         ringRef.current.children.forEach(child => {
-          (child as THREE.Mesh).material.opacity = THREE.MathUtils.lerp((child as THREE.Mesh).material.opacity, 0, delta * 2);
+          const mat = (child as THREE.Mesh).material as THREE.MeshBasicMaterial;
+          mat.opacity = THREE.MathUtils.lerp(mat.opacity, 0, delta * 2);
         });
       } else {
         ringRef.current.rotation.x -= delta * 0.5;

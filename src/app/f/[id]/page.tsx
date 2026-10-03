@@ -2,7 +2,7 @@
 
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
-import { students, Student } from "@/data/students";
+import { students } from "@/data/students";
 import { getRandomTemplateId } from "@/lib/template-engine";
 import { motion } from "framer-motion";
 
@@ -10,27 +10,19 @@ import { templates } from "@/templates";
 
 export default function ExperiencePage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const [student, setStudent] = useState<Student | null>(null);
   const [templateId, setTemplateId] = useState<number | null>(null);
-  const [notFound, setNotFound] = useState(false);
   const [key, setKey] = useState(0);
   
   const resolvedParams = use(params);
+  const id = parseInt(resolvedParams.id, 10);
+  const found = students.find(s => s.id === id);
   
   useEffect(() => {
-    const id = parseInt(resolvedParams.id, 10);
-    const found = students.find(s => s.id === id);
-    
-    if (!found) {
-      setNotFound(true);
-      return;
-    }
-
-    setStudent(found);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTemplateId(getRandomTemplateId());
-  }, [resolvedParams.id, key]);
+  }, []);
 
-  if (notFound) {
+  if (!found) {
     return (
       <div className="min-h-[100svh] bg-[#050507] text-white flex flex-col items-center justify-center p-8 font-sans relative overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
@@ -50,7 +42,7 @@ export default function ExperiencePage({ params }: { params: Promise<{ id: strin
     );
   }
 
-  if (!student || !templateId) {
+  if (!found || !templateId) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <motion.div
@@ -71,12 +63,15 @@ export default function ExperiencePage({ params }: { params: Promise<{ id: strin
 
   return (
     <div className="relative w-full h-full">
-      <TemplateComponent key={key} student={student} />
+      <TemplateComponent key={key} student={found} />
       
       {/* Experience Again Button overlay */}
       <div className="absolute top-6 right-6 z-50">
         <button
-          onClick={() => setKey(k => k + 1)}
+          onClick={() => {
+            setKey(k => k + 1);
+            setTemplateId(getRandomTemplateId());
+          }}
           className="px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-xs font-medium text-white/80 hover:text-white hover:bg-white/10 hover:scale-105 transition-all uppercase tracking-widest shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
         >
           EXPERIENCE AGAIN

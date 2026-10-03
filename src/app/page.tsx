@@ -78,7 +78,7 @@ export default function Home() {
                 Welcome To Your Next Chapter
               </h1>
               <p className="subtitle-fluid text-white/60 mb-8 max-w-sm mx-auto">
-                Every fresher has a story. Let's begin yours.
+                Every fresher has a story. Let&apos;s begin yours.
               </p>
 
               <form onSubmit={handleSearch} className="flex flex-col gap-4">

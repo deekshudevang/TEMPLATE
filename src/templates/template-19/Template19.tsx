@@ -60,12 +60,21 @@ function Fractal({ opened, setOpened }: { opened: boolean, setOpened: (v: boolea
     }
   });
 
+  const [rings] = useState(() => {
+    return Array.from({ length: 20 }).map((_, i) => ({
+      rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0] as [number, number, number],
+      scale: 1 - i * 0.04,
+      color: new THREE.Color(`hsl(${330 + i * 2}, 100%, 60%)`),
+      emissive: new THREE.Color(`hsl(${330 + i * 2}, 100%, 30%)`)
+    }));
+  });
+
   return (
     <group ref={groupRef} onClick={() => setOpened(true)}>
-      {Array.from({ length: 20 }).map((_, i) => (
-        <mesh key={i} rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]} scale={1 - i * 0.04}>
+      {rings.map((ring, i) => (
+        <mesh key={i} rotation={ring.rotation} scale={ring.scale}>
           <torusGeometry args={[3, 0.1, 16, 100]} />
-          <meshStandardMaterial color={new THREE.Color(`hsl(${330 + i * 2}, 100%, 60%)`)} emissive={new THREE.Color(`hsl(${330 + i * 2}, 100%, 30%)`)} wireframe />
+          <meshStandardMaterial color={ring.color} emissive={ring.emissive} wireframe />
         </mesh>
       ))}
     </group>

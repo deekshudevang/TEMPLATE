@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { PerspectiveCamera, OrbitControls, Environment, Text } from '@react-three/drei';
+import { PerspectiveCamera, OrbitControls, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
 
@@ -18,7 +18,7 @@ export default function Template16({ student }: { student: { id: number, usn: st
         <spotLight position={[-5, -10, 5]} intensity={2} color="#ff00ff" penumbra={1} />
         <Environment preset="night" />
         
-        <Crystal opened={opened} setOpened={setOpened} student={student} />
+        <Crystal opened={opened} setOpened={setOpened} />
         
         <OrbitControls enableZoom={false} enablePan={false} autoRotate={!opened} autoRotateSpeed={1.5} />
       </Canvas>
@@ -47,7 +47,7 @@ export default function Template16({ student }: { student: { id: number, usn: st
   );
 }
 
-function Crystal({ opened, setOpened, student }: { opened: boolean, setOpened: (v: boolean) => void, student: any }) {
+function Crystal({ opened, setOpened }: { opened: boolean, setOpened: (v: boolean) => void }) {
   const innerRef = React.useRef<THREE.Mesh>(null);
   const outerRef = React.useRef<THREE.Group>(null);
 

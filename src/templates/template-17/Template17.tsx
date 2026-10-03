@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { PerspectiveCamera, OrbitControls, Stars, Text } from '@react-three/drei';
+import { PerspectiveCamera, OrbitControls, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
 
@@ -63,16 +63,19 @@ function Galaxy({ opened, setOpened }: { opened: boolean, setOpened: (v: boolean
   });
 
   const particleCount = 1000;
-  const posArray = new Float32Array(particleCount * 3);
-  for(let i = 0; i < particleCount * 3; i++) {
-    posArray[i] = (Math.random() - 0.5) * 10;
-  }
+  const [posArray] = useState(() => {
+    const arr = new Float32Array(particleCount * 3);
+    for(let i = 0; i < particleCount * 3; i++) {
+      arr[i] = (Math.random() - 0.5) * 10;
+    }
+    return arr;
+  });
 
   return (
     <group onClick={() => setOpened(true)}>
       <points ref={particlesRef}>
         <bufferGeometry>
-          <bufferAttribute attach="attributes-position" count={particleCount} array={posArray} itemSize={3} />
+          <bufferAttribute attach="attributes-position" args={[posArray, 3]} />
         </bufferGeometry>
         <pointsMaterial size={0.05} color="#88aaff" transparent opacity={0.8} blending={THREE.AdditiveBlending} />
       </points>
