@@ -27,7 +27,7 @@ const themes = [
 const generateTemplateContent = (theme) => `
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { TemplateProps } from "../types";
 import { useStorySequence } from "@/components/story/useStorySequence";
@@ -48,6 +48,12 @@ const STEPS = [
 export default function Template${theme.id}({ student, onAgain, onHome }: TemplateProps) {
   const { stepId, completed, skipToEnd, totalSteps, currentStep } = useStorySequence(STEPS);
   const [showCard, setShowCard] = useState(false);
+
+  useEffect(() => {
+    if (stepId === "invitation" || completed) {
+      setShowCard(true);
+    }
+  }, [stepId, completed]);
 
   if (showCard) {
     return <InvitationCard student={student} templateId={parseInt("${theme.id}", 10)} accentColor="${theme.color}" onAgain={onAgain} onHome={onHome} />;
@@ -90,7 +96,7 @@ export default function Template${theme.id}({ student, onAgain, onHome }: Templa
         )}
 
         {stepId === "finale" && (
-          <Finale collegeName={EVENT.college} onNext={() => setShowCard(true)} />
+          <Finale key="finale" collegeName={EVENT.college} onNext={() => setShowCard(true)} />
         )}
       </AnimatePresence>
 

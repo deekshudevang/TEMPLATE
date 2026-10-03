@@ -8,6 +8,7 @@ import { getRandomTemplateId } from "@/lib/template-engine";
 import { motion } from "framer-motion";
 
 import { templates } from "@/templates";
+import { ThemeScope } from "@/components/ThemeScope";
 
 export default function ExperiencePage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -71,7 +72,7 @@ export default function ExperiencePage({ params }: { params: Promise<{ id: strin
   }
 
   return (
-    <div className="relative w-full min-h-[100svh]">
+    <ThemeScope themeId={templateId}>
       <TemplateComponent 
         key={key} 
         student={found} 
@@ -81,6 +82,6 @@ export default function ExperiencePage({ params }: { params: Promise<{ id: strin
         }}
         onHome={() => router.push("/")}
       />
-    </div>
+    </ThemeScope>
   );
 }

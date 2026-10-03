@@ -9,7 +9,7 @@ export function TapToContinue({ onClick }: { onClick: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: [0.3, 0.7, 0.3] }}
       transition={{ duration: 2, repeat: Infinity }}
-      className="absolute bottom-[max(32px,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.3em] text-white/50 z-50 select-none"
+      className="absolute bottom-[max(32px,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.3em] text-[var(--theme-text-muted)] z-50 select-none font-[var(--theme-font-body)]"
       aria-label="Tap to continue"
     >
       TAP TO CONTINUE →
@@ -52,7 +52,7 @@ export function NameReveal({
       initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
       animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
       transition={{ duration: 1.2, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={`text-3xl sm:text-4xl md:text-5xl font-bold leading-tight ${className}`}
+      className={`font-[var(--theme-font-display)] text-[var(--theme-accent)] text-3xl sm:text-4xl md:text-5xl font-bold leading-tight ${className}`}
       style={{ fontSize: "clamp(1.5rem, 6vw, 3.5rem)" }}
     >
       {name}
@@ -74,7 +74,7 @@ export function UsnReveal({
       initial={{ opacity: 0 }}
       animate={{ opacity: 0.6 }}
       transition={{ duration: 0.8, delay }}
-      className={`font-mono text-sm tracking-wider ${className}`}
+      className={`font-[var(--theme-font-mono)] text-[var(--theme-text-muted)] text-sm tracking-wider ${className}`}
     >
       {usn}
     </motion.p>
@@ -95,7 +95,7 @@ export function StoryParagraph({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 0.8, y: 0 }}
       transition={{ duration: 1, delay }}
-      className={`text-sm sm:text-base leading-relaxed max-w-md ${className}`}
+      className={`font-[var(--theme-font-body)] text-[var(--theme-text-muted)] text-sm sm:text-base leading-relaxed max-w-md ${className}`}
     >
       {children}
     </motion.p>
@@ -105,19 +105,21 @@ export function StoryParagraph({
 export function ProgressIndicator({
   current,
   total,
+  className,
 }: {
   current: number;
   total: number;
+  className?: string;
 }) {
   return (
     <div className="fixed top-[max(16px,env(safe-area-inset-top))] left-4 right-4 z-50 flex gap-1">
       {Array.from({ length: total }, (_, i) => (
         <div
           key={i}
-          className="h-0.5 flex-1 rounded-full overflow-hidden bg-white/10"
+          className="h-0.5 flex-1 rounded-full overflow-hidden bg-[var(--theme-border)]"
         >
           <motion.div
-            className="h-full bg-white/60"
+            className="h-full bg-[var(--theme-accent)]"
             initial={{ width: 0 }}
             animate={{ width: i < current ? "100%" : i === current ? "100%" : "0%" }}
             transition={{ duration: i === current ? 3 : 0.3 }}
@@ -128,11 +130,13 @@ export function ProgressIndicator({
   );
 }
 
-export function NoiseOverlay() {
+export function NoiseOverlay({ opacity = 0.03, mixBlendMode = "overlay" }: { opacity?: number, mixBlendMode?: string }) {
   return (
     <div
-      className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay z-[1]"
+      className="absolute inset-0 pointer-events-none z-[1]"
       style={{
+        opacity,
+        mixBlendMode: mixBlendMode as any,
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
       }}
     />

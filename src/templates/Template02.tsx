@@ -2,108 +2,152 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { TemplateProps } from "../types";
+import type { TemplateProps } from "./types";
 import { useStorySequence } from "@/components/story/useStorySequence";
-import { NameReveal, UsnReveal, ProgressIndicator, NoiseOverlay, TapToContinue } from "@/components/story/Primitives";
+import { CinematicText, ProgressIndicator, NoiseOverlay, TapToContinue } from "@/components/story/Primitives";
 import { InvitationCard } from "@/components/story/InvitationCard";
 import { Finale } from "@/components/story/Finale";
 import { EVENT } from "@/config/event";
 
 const STEPS = [
-  { id: "boot", duration: 2500 },
-  { id: "scan", duration: 3000 },
-  { id: "identity", duration: 3500 },
-  { id: "usn", duration: 2500 },
-  { id: "clearance", duration: 3500 },
+  { id: "chaos", duration: 3000 },
+  { id: "sphere", duration: 4000 },
+  { id: "collapse", duration: 3000 },
+  { id: "name", duration: 4500 },
+  { id: "message", duration: 4000 },
   { id: "finale", duration: 4000 },
   { id: "invitation", duration: 0 },
 ];
 
-function GlitchText({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <motion.span
-      animate={{ x: [0, -2, 2, 0], opacity: [1, 0.8, 1] }}
-      transition={{ duration: 0.1, repeat: 3 }}
-      className={className}
-    >
-      {children}
-    </motion.span>
-  );
-}
+const KINETIC = "#E5E5E5";
 
-function TypewriterText({ text, speed = 30 }: { text: string; speed?: number }) {
-  const [display, setDisplay] = useState("");
-  useEffect(() => {
-    let i = 0;
-    const timer = setInterval(() => {
-      if (i < text.length) { setDisplay(text.slice(0, i + 1)); i++; }
-      else clearInterval(timer);
-    }, speed);
-    return () => clearInterval(timer);
-  }, [text, speed]);
-  return <span>{display}<span className="animate-pulse">▌</span></span>;
-}
+// Helper for chaotic letters snapping together
+const KineticLetters = ({ text }: { text: string }) => {
+  const chars = text.split("");
+  return (
+    <div className="flex gap-1 sm:gap-2 items-center justify-center font-sans font-black text-4xl sm:text-7xl uppercase tracking-tighter">
+      {chars.map((char, i) => {
+        // Random positions for the chaos phase
+        const rx = (Math.random() - 0.5) * 300;
+        const ry = (Math.random() - 0.5) * 300;
+        const rRot = (Math.random() - 0.5) * 360;
+        const rScale = Math.random() * 2 + 0.5;
+
+        return (
+          <motion.div
+            key={i}
+            initial={{ x: rx, y: ry, rotate: rRot, scale: rScale, opacity: 0, filter: "blur(10px)" }}
+            animate={{ x: 0, y: 0, rotate: 0, scale: 1, opacity: 1, filter: "blur(0px)" }}
+            transition={{
+              duration: 2,
+              delay: 0.5 + i * 0.1,
+              ease: [0.16, 1, 0.3, 1], // expo out
+            }}
+            className="text-white drop-shadow-2xl mix-blend-difference"
+          >
+            {char === " " ? "\u00A0" : char}
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+};
 
 export default function Template02({ student, onAgain, onHome }: TemplateProps) {
   const { stepId, completed, skipToEnd, totalSteps, currentStep } = useStorySequence(STEPS);
   const [showCard, setShowCard] = useState(false);
 
+  useEffect(() => {
+    if (stepId === "invitation" || completed) {
+      setShowCard(true);
+    }
+  }, [stepId, completed]);
+
   if (showCard) {
-    return <InvitationCard student={student} templateId={2} accentColor="#00FF88" onAgain={onAgain} onHome={onHome} />;
+    return <InvitationCard student={student} templateId={2} onAgain={onAgain} onHome={onHome} />;
   }
 
   return (
-    <div className="min-h-[100svh] bg-black text-[#00FF88] flex items-center justify-center relative overflow-hidden font-mono" onClick={!completed ? skipToEnd : undefined}>
-      <NoiseOverlay />
+    <div className="min-h-[100svh] bg-[#111111] text-[#E5E5E5] flex items-center justify-center relative overflow-hidden font-sans" onClick={!completed ? skipToEnd : undefined}>
+      <NoiseOverlay opacity={0.1} />
       <ProgressIndicator current={currentStep} total={totalSteps} />
 
-      {/* Scanlines */}
-      <div className="absolute inset-0 pointer-events-none z-[2]" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,136,0.03) 2px, rgba(0,255,136,0.03) 4px)" }} />
+      {/* Ambient glowing orb in the background */}
+      <motion.div 
+        animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute w-[60vh] h-[60vh] rounded-full bg-white/5 blur-[100px] pointer-events-none"
+      />
 
       <AnimatePresence mode="wait">
-        {stepId === "boot" && (
-          <motion.div key="boot" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center space-y-3 z-10 p-8">
-            <p className="text-xs text-[#00FF88]/50">SYSTEM v4.2.1</p>
-            <p className="text-sm"><TypewriterText text="INITIALIZING IDENTITY PROTOCOL..." speed={40} /></p>
-            <motion.div animate={{ width: ["0%", "100%"] }} transition={{ duration: 2 }} className="h-0.5 bg-[#00FF88]/40 rounded-full mx-auto max-w-xs" />
+        {stepId === "chaos" && (
+          <motion.div key="chaos" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }} className="text-center flex flex-col items-center justify-center z-10 w-full p-8">
+            <CinematicText className="text-xs font-bold tracking-[0.5em] text-white/50 mb-12">
+              System Initialization
+            </CinematicText>
+            {/* Chaotic moving elements */}
+            <div className="relative w-full h-32">
+              {Array.from({ length: 20 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ x: 0, y: 0, opacity: 0 }}
+                  animate={{ 
+                    x: (Math.random() - 0.5) * 200, 
+                    y: (Math.random() - 0.5) * 100, 
+                    opacity: [0, 0.8, 0],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, delay: Math.random() * 2 }}
+                  className="absolute left-1/2 top-1/2 font-mono text-white/30 text-xl font-bold"
+                >
+                  {String.fromCharCode(48 + Math.floor(Math.random() * 10))}
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         )}
 
-        {stepId === "scan" && (
-          <motion.div key="scan" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center space-y-4 z-10 p-8">
-            <motion.div animate={{ scaleY: [1, 0.5, 1] }} transition={{ duration: 0.5, repeat: 4 }} className="w-32 h-32 mx-auto border border-[#00FF88]/30 rounded-lg flex items-center justify-center relative">
-              <motion.div animate={{ top: ["0%", "100%", "0%"] }} transition={{ duration: 2, repeat: Infinity }} className="absolute left-0 right-0 h-px bg-[#00FF88]/60" />
-              <span className="text-3xl">👤</span>
+        {stepId === "sphere" && (
+          <motion.div key="sphere" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 1.5, filter: "blur(20px)" }} className="text-center w-full max-w-2xl px-4 z-10 flex flex-col items-center justify-center h-full">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, ease: "linear", repeat: Infinity }}
+              className="relative w-64 h-64 flex items-center justify-center border border-white/10 rounded-full"
+            >
+              <div className="absolute inset-4 border-t border-b border-white/20 rounded-full animate-[spin_10s_linear_infinite_reverse]" />
+              <div className="absolute inset-8 border-l border-r border-white/30 rounded-full animate-[spin_15s_linear_infinite]" />
+              <div className="font-mono text-2xl tracking-widest text-white/80">{student.usn}</div>
             </motion.div>
-            <p className="text-xs text-[#00FF88]/50"><TypewriterText text="BIOMETRIC SCAN COMPLETE" speed={50} /></p>
+            <p className="mt-12 text-xs font-bold tracking-[0.3em] text-white/40 uppercase">Locating Signal</p>
           </motion.div>
         )}
 
-        {stepId === "identity" && (
-          <motion.div key="identity" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center space-y-4 z-10 p-8">
-            <GlitchText className="text-xs text-[#00FF88]/40 block">[IDENTITY MATCH FOUND]</GlitchText>
-            <NameReveal name={student.name} delay={0.3} className="text-[#00FF88] font-mono" />
+        {stepId === "collapse" && (
+          <motion.div key="collapse" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 flex items-center justify-center z-10 bg-white">
+            {/* White flash */}
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 100 }} transition={{ duration: 1.5, ease: "circIn" }} className="w-4 h-4 bg-black rounded-full" />
           </motion.div>
         )}
 
-        {stepId === "usn" && (
-          <motion.div key="usn" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center space-y-3 z-10 p-8">
-            <p className="text-xs text-[#00FF88]/40">CLASSIFICATION: FRESHER</p>
-            <UsnReveal usn={student.usn} className="text-[#00FF88]" />
-            <p className="text-xs text-[#00FF88]/30">NODE #{student.id}</p>
+        {stepId === "name" && (
+          <motion.div key="name" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -20 }} className="text-center z-10 p-4 w-full">
+            <CinematicText className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 mb-8">
+              Target Acquired
+            </CinematicText>
+            <KineticLetters text={student.name} />
           </motion.div>
         )}
 
-        {stepId === "clearance" && (
-          <motion.div key="clearance" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center space-y-3 z-10 p-8 max-w-md mx-auto">
-            <p className="text-sm text-[#00FF88]/70 leading-relaxed">
-              <TypewriterText text={`Access granted. Your digital presence is required at ${EVENT.name}. Initiate your journey into the future of ${EVENT.college}.`} speed={25} />
+        {stepId === "message" && (
+          <motion.div key="message" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="text-center z-10 p-8 max-w-lg mx-auto">
+            <div className="w-12 h-1 bg-white mb-8 mx-auto" />
+            <p className="text-white/80 font-sans font-medium text-lg sm:text-xl leading-relaxed tracking-wide">
+              Chaos finds order. The kinetic energy of the universe has converged to bring you to {EVENT.college}. Step into the momentum.
             </p>
           </motion.div>
         )}
 
         {stepId === "finale" && (
-          <Finale collegeName={EVENT.college} onNext={() => setShowCard(true)} />
+          <Finale key="finale" collegeName={EVENT.college} onNext={() => setShowCard(true)} />
         )}
       </AnimatePresence>
 

@@ -2,7 +2,7 @@ export const EVENT = {
   name: "Freshers' Welcome 2026",
   college: "GOVERNMENT ENGINEERING COLLEGE HASSAN",
   department: "",
-  date: "TBA",
+  date: "14ᵗʰOct",
   time: "9 AM",
   venue: "GECH ROOM NO 332",
   rsvp: "",

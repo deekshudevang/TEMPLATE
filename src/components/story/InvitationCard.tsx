@@ -23,13 +23,11 @@ function replacePlaceholders(text: string, student: Student): string {
 export function InvitationCard({
   student,
   templateId,
-  accentColor = "white",
   onAgain,
   onHome,
 }: {
   student: Student;
   templateId: number;
-  accentColor?: string;
   onAgain: () => void;
   onHome: () => void;
 }) {
@@ -42,9 +40,13 @@ export function InvitationCard({
   const handleSave = useCallback(async () => {
     if (!cardRef.current) return;
     try {
+      // We must read the computed background color for the image capture
+      const computedStyle = window.getComputedStyle(cardRef.current);
+      const bgColor = computedStyle.getPropertyValue("--theme-bg").trim() || "#050507";
+      
       const url = await toPng(cardRef.current, {
         pixelRatio: 3,
-        backgroundColor: "#050507",
+        backgroundColor: bgColor,
       });
       const a = document.createElement("a");
       a.href = url;
@@ -60,71 +62,71 @@ export function InvitationCard({
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-      className="min-h-[100svh] flex flex-col items-center justify-center p-4 sm:p-6 relative"
+      className="min-h-[100svh] flex flex-col items-center justify-center p-4 sm:p-6 relative text-[var(--theme-text)]"
     >
       <div
         ref={cardRef}
-        className="w-full max-w-md mx-auto rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 sm:p-8 space-y-5 relative overflow-hidden"
+        className="w-full max-w-md mx-auto rounded-[var(--theme-radius)] border border-[var(--theme-border)] bg-[var(--theme-card)] shadow-[var(--theme-shadow)] p-6 sm:p-8 space-y-5 relative overflow-hidden"
       >
         {/* Top accent line */}
         <div
           className="absolute top-0 left-1/4 right-1/4 h-px"
           style={{
-            background: `linear-gradient(90deg, transparent, ${accentColor}40, transparent)`,
+            background: `linear-gradient(90deg, transparent, var(--theme-accent), transparent)`,
+            opacity: 0.4
           }}
         />
 
-        <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 text-center">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-[var(--theme-text-muted)] text-center">
           {EVENT.name}
         </p>
 
         <h2
-          className="text-xl sm:text-2xl font-bold text-center leading-tight"
-          style={{ color: accentColor }}
+          className="font-[var(--theme-font-display)] text-xl sm:text-2xl font-bold text-center leading-tight text-[var(--theme-accent)]"
         >
           {headline}
         </h2>
 
-        <p className="text-sm text-white/70 text-center leading-relaxed">{body}</p>
+        <p className="font-[var(--theme-font-body)] text-sm text-[var(--theme-text-muted)] text-center leading-relaxed">{body}</p>
 
-        <div className="h-px bg-white/10 my-4" />
+        <div className="h-px bg-[var(--theme-border)] my-4" />
 
         {/* Event Details */}
-        <div className="space-y-2 text-center text-sm text-white/60">
-          <p className="font-mono">
+        <div className="space-y-2 text-center text-sm text-[var(--theme-text-muted)]">
+          <p className="font-[var(--theme-font-mono)]">
             {EVENT.date} at {EVENT.time}
           </p>
-          <p>{EVENT.venue}</p>
+          <p className="font-[var(--theme-font-body)]">{EVENT.venue}</p>
         </div>
 
-        <div className="h-px bg-white/10 my-4" />
+        <div className="h-px bg-[var(--theme-border)] my-4" />
 
-        <p className="text-center text-xs text-white/40 uppercase tracking-widest">
+        <p className="font-[var(--theme-font-body)] text-center text-xs text-[var(--theme-text-muted)] uppercase tracking-widest">
           Fresher No. {student.id}
         </p>
 
-        <p className="text-center text-[10px] text-white/30 uppercase tracking-wider">
+        <p className="font-[var(--theme-font-body)] text-center text-[10px] text-[var(--theme-text-muted)] opacity-70 uppercase tracking-wider">
           Hosted by {EVENT.hostedBy}
         </p>
       </div>
 
       {/* Action Bar */}
-      <div className="flex gap-3 mt-6 w-full max-w-md mx-auto">
+      <div className="flex gap-3 mt-6 w-full max-w-md mx-auto font-[var(--theme-font-body)]">
         <button
           onClick={handleSave}
-          className="flex-1 py-3 text-xs uppercase tracking-widest rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 transition-colors"
+          className="flex-1 py-3 text-xs uppercase tracking-widest rounded-full border border-[var(--theme-border)] bg-[var(--theme-card)] text-[var(--theme-text)] hover:opacity-80 transition-opacity"
         >
           Save Card
         </button>
         <button
           onClick={onAgain}
-          className="flex-1 py-3 text-xs uppercase tracking-widest rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 transition-colors"
+          className="flex-1 py-3 text-xs uppercase tracking-widest rounded-full border border-[var(--theme-border)] bg-[var(--theme-card)] text-[var(--theme-text)] hover:opacity-80 transition-opacity"
         >
           Experience Again
         </button>
         <button
           onClick={onHome}
-          className="py-3 px-5 text-xs uppercase tracking-widest rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 transition-colors"
+          className="py-3 px-5 text-xs uppercase tracking-widest rounded-full border border-[var(--theme-border)] bg-[var(--theme-card)] text-[var(--theme-text)] hover:opacity-80 transition-opacity"
         >
           Home
         </button>

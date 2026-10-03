@@ -1,70 +1,110 @@
-
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { TemplateProps } from "../types";
+import type { TemplateProps } from "./types";
 import { useStorySequence } from "@/components/story/useStorySequence";
-import { CinematicText, NameReveal, UsnReveal, StoryParagraph, ProgressIndicator, NoiseOverlay, TapToContinue } from "@/components/story/Primitives";
+import { CinematicText, NameReveal, ProgressIndicator, NoiseOverlay, TapToContinue } from "@/components/story/Primitives";
 import { InvitationCard } from "@/components/story/InvitationCard";
 import { Finale } from "@/components/story/Finale";
 import { EVENT } from "@/config/event";
 
 const STEPS = [
-  { id: "intro", duration: 3000 },
-  { id: "name", duration: 3500 },
-  { id: "usn", duration: 2500 },
-  { id: "message", duration: 4000 },
+  { id: "shatter", duration: 3500 },
+  { id: "refract", duration: 4000 },
+  { id: "name", duration: 4000 },
+  { id: "message", duration: 4500 },
   { id: "finale", duration: 4000 },
   { id: "invitation", duration: 0 },
 ];
+
+const ETHEREAL = "#E0F7FA"; // Very light cyan/glass tint
 
 export default function Template20({ student, onAgain, onHome }: TemplateProps) {
   const { stepId, completed, skipToEnd, totalSteps, currentStep } = useStorySequence(STEPS);
   const [showCard, setShowCard] = useState(false);
 
+  useEffect(() => {
+    if (stepId === "invitation" || completed) {
+      setShowCard(true);
+    }
+  }, [stepId, completed]);
+
   if (showCard) {
-    return <InvitationCard student={student} templateId={parseInt("20", 10)} accentColor="#9400D3" onAgain={onAgain} onHome={onHome} />;
+    return <InvitationCard student={student} templateId={20} onAgain={onAgain} onHome={onHome} />;
   }
 
   return (
-    <div className="min-h-[100svh] bg-[#050507] text-white flex items-center justify-center relative overflow-hidden" onClick={!completed ? skipToEnd : undefined}>
-      <NoiseOverlay />
+    <div className="min-h-[100svh] bg-[#F5FBFC] text-[#4A6FA5] flex items-center justify-center relative overflow-hidden" onClick={!completed ? skipToEnd : undefined}>
+      <NoiseOverlay opacity={0.1} />
       <ProgressIndicator current={currentStep} total={totalSteps} />
 
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(224,247,250,0.5)_0%,rgba(245,251,252,1)_100%)] pointer-events-none" />
+
       <AnimatePresence mode="wait">
-        {stepId === "intro" && (
-          <motion.div key="intro" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center space-y-4 z-10 p-8">
-            <CinematicText className="text-xs uppercase tracking-[0.5em] text-[#9400D3]/50">
-              Portal
+        {stepId === "shatter" && (
+          <motion.div key="shatter" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, filter: "blur(10px)" }} className="text-center flex flex-col items-center justify-center z-10 w-full p-8">
+            <CinematicText className="text-[10px] uppercase tracking-[0.5em] text-[#4A6FA5]/50 mb-8 font-light">
+              Breaking Illusions
             </CinematicText>
+            <div className="relative w-48 h-48 flex items-center justify-center">
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+                  animate={{ 
+                    opacity: [0, 0.5, 0], 
+                    scale: [0.5, 2, 2.5], 
+                    rotate: [0, Math.random() * 180 - 90]
+                  }}
+                  transition={{ duration: 2, delay: i * 0.4, ease: "easeOut" }}
+                  className="absolute border border-white/40 bg-white/20 backdrop-blur-sm"
+                  style={{
+                    width: `${Math.random() * 60 + 40}%`,
+                    height: `${Math.random() * 60 + 40}%`,
+                    clipPath: `polygon(${Math.random() * 100}% 0, 100% ${Math.random() * 100}%, ${Math.random() * 100}% 100%, 0 ${Math.random() * 100}%)`
+                  }}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {stepId === "refract" && (
+          <motion.div key="refract" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, filter: "blur(20px)", scale: 1.2 }} className="text-center w-full max-w-2xl px-4 z-10 flex flex-col items-center justify-center h-full">
+            <motion.div
+              initial={{ letterSpacing: "-0.1em", opacity: 0, y: 20 }}
+              animate={{ letterSpacing: "0.2em", opacity: 1, y: 0 }}
+              transition={{ duration: 2, ease: "easeOut" }}
+              className="font-serif text-3xl sm:text-5xl text-[#2C4870] tracking-widest drop-shadow-[0_4px_10px_rgba(224,247,250,0.8)] mix-blend-multiply"
+            >
+              {student.usn}
+            </motion.div>
+            <p className="mt-8 text-xs font-sans tracking-[0.4em] text-[#4A6FA5]/50 uppercase">
+              Clarity Achieved
+            </p>
           </motion.div>
         )}
 
         {stepId === "name" && (
-          <motion.div key="name" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center space-y-4 z-10 p-8">
-            <CinematicText className="text-xs uppercase tracking-[0.3em] text-white/40">Welcome</CinematicText>
-            <NameReveal name={student.name} delay={0.3} className="text-[#9400D3]" />
-          </motion.div>
-        )}
-
-        {stepId === "usn" && (
-          <motion.div key="usn" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center space-y-3 z-10 p-8">
-            <UsnReveal usn={student.usn} className="text-[#9400D3]/60" />
-            <p className="text-xs text-white/30 uppercase tracking-widest">ID: {student.id}</p>
+          <motion.div key="name" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }} className="text-center z-10 p-8 w-full">
+            <CinematicText className="text-[10px] font-sans uppercase tracking-[0.6em] text-[#4A6FA5]/60 mb-6 font-light">
+              True Reflection
+            </CinematicText>
+            <NameReveal name={student.name} delay={0.2} className="text-[#1A2F4C] font-serif font-light text-4xl sm:text-7xl drop-shadow-[0_10px_20px_rgba(74,111,165,0.1)] capitalize" />
           </motion.div>
         )}
 
         {stepId === "message" && (
-          <motion.div key="message" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center z-10 p-8 max-w-lg mx-auto">
-            <StoryParagraph className="text-white/70 text-center mx-auto">
-              Cross the threshold into a new world.
-            </StoryParagraph>
+          <motion.div key="message" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-center z-10 p-8 max-w-lg mx-auto relative rounded-xl border border-white/60 bg-white/30 backdrop-blur-lg shadow-[0_8px_32px_rgba(74,111,165,0.1)]">
+            <p className="text-[#2C4870] font-sans font-light text-sm sm:text-lg leading-relaxed px-4 py-6">
+              Like a prism revealing hidden colors, your journey at {EVENT.college} will reveal your true brilliance. Step into the light.
+            </p>
           </motion.div>
         )}
 
         {stepId === "finale" && (
-          <Finale collegeName={EVENT.college} onNext={() => setShowCard(true)} />
+          <Finale key="finale" collegeName={EVENT.college} onNext={() => setShowCard(true)} />
         )}
       </AnimatePresence>
 
