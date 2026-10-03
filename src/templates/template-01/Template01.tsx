@@ -6,7 +6,7 @@ import { Text, PerspectiveCamera, OrbitControls, Environment, useGLTF } from '@r
 import * as THREE from 'three';
 import { motion } from 'framer-motion';
 
-export default function Template01({ student }: { student: any }) {
+export default function Template01({ student }: { student: { id: number, usn: string, name: string } }) {
   const [opened, setOpened] = useState(false);
 
   return (
@@ -46,7 +46,7 @@ export default function Template01({ student }: { student: any }) {
   );
 }
 
-function Cryptex({ student, opened, setOpened }: { student: any, opened: boolean, setOpened: (v: boolean) => void }) {
+function Cryptex({ student, opened, setOpened }: { student: { id: number, usn: string, name: string }, opened: boolean, setOpened: (v: boolean) => void }) {
   const groupRef = useRef<THREE.Group>(null);
   const scrollRef = useRef<THREE.Group>(null);
   

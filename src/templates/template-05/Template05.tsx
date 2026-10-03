@@ -35,7 +35,8 @@ function GlassShatter({ usn, name }: { usn: string, name: string }) {
         Math.random() * 2,
         Math.random() * 2,
         Math.random() * 2
-      )
+      ),
+      size: [Math.random() * 1 + 0.5, Math.random() * 1 + 0.5, 0.1] as [number, number, number]
     }));
   });
 
@@ -73,7 +74,7 @@ function GlassShatter({ usn, name }: { usn: string, name: string }) {
       <group ref={shardsGroup}>
         {shards.map((s, i) => (
           <mesh key={i} position={s.position}>
-            <boxGeometry args={[Math.random() * 1 + 0.5, Math.random() * 1 + 0.5, 0.1]} />
+            <boxGeometry args={s.size} />
             <meshPhysicalMaterial 
               color="#ffffff" 
               transmission={0.9} 

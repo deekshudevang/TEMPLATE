@@ -13,7 +13,7 @@ interface TemplateProps {
   };
 }
 
-function Terminal({ student }: { student: any }) {
+function Terminal({ student }: { student: { id: number, usn: string, name: string } }) {
   const [text, setText] = useState('');
   const fullText = `> INITIALIZING SYSTEM...
 > AUTHENTICATING USN: ${student.usn}
