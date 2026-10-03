@@ -1,4 +1,4 @@
-import { templates } from "@/templates";
+import { templates } from "../templates";
 
 export const getRandomTemplateId = (): number => {
   if (typeof window === "undefined") return 1;
