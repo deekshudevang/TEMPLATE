@@ -6,7 +6,20 @@ let templatesContent = '"use client";\n\n';
 templatesContent += 'import React, { useState, useEffect } from "react";\n';
 templatesContent += 'import { Student } from "@/data/students";\n';
 templatesContent += 'import { useRouter } from "next/navigation";\n';
-templatesContent += 'import { motion, AnimatePresence } from "framer-motion";\n\n';
+templatesContent += 'import { motion, AnimatePresence } from "framer-motion";\n';
+templatesContent += 'import { EVENT } from "@/config/event";\n';
+templatesContent += 'import { INVITATION_COPY } from "@/config/invitationCopy";\n\n';
+
+templatesContent += 'const replacePlaceholders = (text: string, student: Student) => {\n';
+templatesContent += '  return text\n';
+templatesContent += '    .replace(/{name}/g, student.name)\n';
+templatesContent += '    .replace(/{firstName}/g, student.name.split(" ")[0])\n';
+templatesContent += '    .replace(/{event}/g, EVENT.name)\n';
+templatesContent += '    .replace(/{college}/g, EVENT.college)\n';
+templatesContent += '    .replace(/{date}/g, EVENT.date)\n';
+templatesContent += '    .replace(/{time}/g, EVENT.time)\n';
+templatesContent += '    .replace(/{venue}/g, EVENT.venue);\n';
+templatesContent += '};\n\n';
 
 templatesContent += 'interface TemplateProps { student: Student; }\n\n';
 
@@ -58,16 +71,27 @@ const T${n} = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-${layout === 'center' ? 'center text-center' : layout === 'left' ? 'start text-left' : layout === 'right' ? 'end text-right' : 'center text-center justify-end pb-24'} p-8 z-20 ${layout === 'bottom' ? '' : 'justify-center'}">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "${ac}" }}>Formal Invitation ${n}</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "${ac}" }}>{replacePlaceholders(INVITATION_COPY[${n}]?.headline || "Formal Invitation ${n}", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ${layout === 'center' ? 'mx-auto' : ''}">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[${n}]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[${n}]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "${ac}" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>

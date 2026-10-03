@@ -1,12 +1,11 @@
 export const EVENT = {
   name: "Freshers' Welcome 2026",
-  college: "<COLLEGE NAME>",
-  department: "<optional>",
-  date: "<DD Month YYYY>",
-  time: "<HH:MM AM/PM>",
-  venue: "<VENUE>",
-  dressCode: "<optional>",
-  rsvp: "<contact or optional>",
-  hostedBy: "<Seniors / Students' Council>",
+  college: "GOVERNMENT ENGINEERING COLLEGE HASSAN",
+  department: "",
+  date: "TBA",
+  time: "9 AM",
+  venue: "GECH ROOM NO 332",
+  rsvp: "",
+  hostedBy: "Seniors / COMPASS MEMBERS ",
   tagline: "Your Next Chapter Begins Here"
 };

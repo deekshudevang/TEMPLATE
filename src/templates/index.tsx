@@ -4,6 +4,19 @@ import React, { useState, useEffect } from "react";
 import { Student } from "@/data/students";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { EVENT } from "@/config/event";
+import { INVITATION_COPY } from "@/config/invitationCopy";
+
+const replacePlaceholders = (text: string, student: Student) => {
+  return text
+    .replace(/{name}/g, student.name)
+    .replace(/{firstName}/g, student.name.split(" ")[0])
+    .replace(/{event}/g, EVENT.name)
+    .replace(/{college}/g, EVENT.college)
+    .replace(/{date}/g, EVENT.date)
+    .replace(/{time}/g, EVENT.time)
+    .replace(/{venue}/g, EVENT.venue);
+};
 
 interface TemplateProps { student: Student; }
 
@@ -42,16 +55,27 @@ const T1 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-center text-center p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#D4AF37" }}>Formal Invitation 1</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#D4AF37" }}>{replacePlaceholders(INVITATION_COPY[1]?.headline || "Formal Invitation 1", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] mx-auto">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[1]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[1]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#D4AF37" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -86,16 +110,27 @@ const T2 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-start text-left p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#e5a93c" }}>Formal Invitation 2</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#e5a93c" }}>{replacePlaceholders(INVITATION_COPY[2]?.headline || "Formal Invitation 2", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[2]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[2]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#e5a93c" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -130,16 +165,27 @@ const T3 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-end text-right p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#85c1e9" }}>Formal Invitation 3</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#85c1e9" }}>{replacePlaceholders(INVITATION_COPY[3]?.headline || "Formal Invitation 3", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[3]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[3]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#85c1e9" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -174,16 +220,27 @@ const T4 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-center text-center justify-end pb-24 p-8 z-20 ">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#d4af37" }}>Formal Invitation 4</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#d4af37" }}>{replacePlaceholders(INVITATION_COPY[4]?.headline || "Formal Invitation 4", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[4]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[4]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#d4af37" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -218,16 +275,27 @@ const T5 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-center text-center p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#d7bde2" }}>Formal Invitation 5</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#d7bde2" }}>{replacePlaceholders(INVITATION_COPY[5]?.headline || "Formal Invitation 5", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] mx-auto">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[5]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[5]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#d7bde2" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -262,16 +330,27 @@ const T6 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-start text-left p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#ff3333" }}>Formal Invitation 6</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#ff3333" }}>{replacePlaceholders(INVITATION_COPY[6]?.headline || "Formal Invitation 6", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[6]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[6]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#ff3333" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -306,16 +385,27 @@ const T7 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-end text-right p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#154360" }}>Formal Invitation 7</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#154360" }}>{replacePlaceholders(INVITATION_COPY[7]?.headline || "Formal Invitation 7", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[7]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[7]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#154360" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -350,16 +440,27 @@ const T8 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-center text-center justify-end pb-24 p-8 z-20 ">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#4a3b00" }}>Formal Invitation 8</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#4a3b00" }}>{replacePlaceholders(INVITATION_COPY[8]?.headline || "Formal Invitation 8", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[8]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[8]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#4a3b00" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -394,16 +495,27 @@ const T9 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-center text-center p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#333333" }}>Formal Invitation 9</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#333333" }}>{replacePlaceholders(INVITATION_COPY[9]?.headline || "Formal Invitation 9", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] mx-auto">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[9]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[9]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#333333" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -438,16 +550,27 @@ const T10 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-start text-left p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#00cc00" }}>Formal Invitation 10</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#00cc00" }}>{replacePlaceholders(INVITATION_COPY[10]?.headline || "Formal Invitation 10", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[10]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[10]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#00cc00" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -482,16 +605,27 @@ const T11 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-end text-right p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#D4AF37" }}>Formal Invitation 11</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#D4AF37" }}>{replacePlaceholders(INVITATION_COPY[11]?.headline || "Formal Invitation 11", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[11]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[11]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#D4AF37" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -526,16 +660,27 @@ const T12 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-center text-center justify-end pb-24 p-8 z-20 ">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#e5a93c" }}>Formal Invitation 12</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#e5a93c" }}>{replacePlaceholders(INVITATION_COPY[12]?.headline || "Formal Invitation 12", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[12]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[12]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#e5a93c" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -570,16 +715,27 @@ const T13 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-center text-center p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#85c1e9" }}>Formal Invitation 13</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#85c1e9" }}>{replacePlaceholders(INVITATION_COPY[13]?.headline || "Formal Invitation 13", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] mx-auto">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[13]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[13]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#85c1e9" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -614,16 +770,27 @@ const T14 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-start text-left p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#d4af37" }}>Formal Invitation 14</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#d4af37" }}>{replacePlaceholders(INVITATION_COPY[14]?.headline || "Formal Invitation 14", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[14]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[14]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#d4af37" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -658,16 +825,27 @@ const T15 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-end text-right p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#d7bde2" }}>Formal Invitation 15</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#d7bde2" }}>{replacePlaceholders(INVITATION_COPY[15]?.headline || "Formal Invitation 15", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[15]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[15]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#d7bde2" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -702,16 +880,27 @@ const T16 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-center text-center justify-end pb-24 p-8 z-20 ">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#ff3333" }}>Formal Invitation 16</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#ff3333" }}>{replacePlaceholders(INVITATION_COPY[16]?.headline || "Formal Invitation 16", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[16]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[16]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#ff3333" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -746,16 +935,27 @@ const T17 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-center text-center p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#154360" }}>Formal Invitation 17</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#154360" }}>{replacePlaceholders(INVITATION_COPY[17]?.headline || "Formal Invitation 17", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] mx-auto">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[17]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[17]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#154360" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -790,16 +990,27 @@ const T18 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-start text-left p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#4a3b00" }}>Formal Invitation 18</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#4a3b00" }}>{replacePlaceholders(INVITATION_COPY[18]?.headline || "Formal Invitation 18", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[18]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[18]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#4a3b00" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -834,16 +1045,27 @@ const T19 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-end text-right p-8 z-20 justify-center">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#333333" }}>Formal Invitation 19</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#333333" }}>{replacePlaceholders(INVITATION_COPY[19]?.headline || "Formal Invitation 19", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[19]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[19]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#333333" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>
@@ -878,16 +1100,27 @@ const T20 = ({ student }: TemplateProps) => {
           <motion.div key="card" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="absolute inset-0 flex flex-col items-center text-center justify-end pb-24 p-8 z-20 ">
             <div className="border border-white/20 p-8 backdrop-blur-xl bg-black/20 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
               <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
-              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#00cc00" }}>Formal Invitation 20</p>
+              <p className="text-xs tracking-[0.3em] uppercase mb-8" style={{ color: "#00cc00" }}>{replacePlaceholders(INVITATION_COPY[20]?.headline || "Formal Invitation 20", student)}</p>
               <h1 className="text-4xl font-light mb-2 leading-tight">{student.name}</h1>
-              <p className="font-mono text-sm opacity-50 mb-12">{student.usn}</p>
+              <p className="font-mono text-sm opacity-50 mb-4">Fresher No. {student.id}</p>
               <div className="space-y-4">
                 <p className="text-sm font-medium leading-relaxed max-w-[280px] ">
-                  You are cordially invited to the Freshers&apos; Welcome Ceremony.
+                  {replacePlaceholders(INVITATION_COPY[20]?.body || "You are cordially invited to the Freshers' Welcome Ceremony.", student)}
                 </p>
-                <p className="text-xs opacity-60">
-                  Join us in celebrating the beginning of your academic excellence.
-                </p>
+                <div className="pt-4 space-y-1 text-xs opacity-80 font-mono">
+                  <p>{EVENT.date} at {EVENT.time}</p>
+                  <p>{EVENT.venue}</p>
+                </div>
+                <div className="pt-6">
+                  <p className="text-xs opacity-60">
+                    {replacePlaceholders(INVITATION_COPY[20]?.cta || "Join us in celebrating the beginning of your academic excellence.", student)}
+                  </p>
+                  <p className="text-xs font-semibold mt-2 opacity-80">Hosted by {EVENT.hostedBy}</p>
+                </div>
+              </div>
+              <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-4">
+                <button className="text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">Decline</button>
+                <button className="text-xs uppercase tracking-wider px-4 py-2 bg-white/10 hover:bg-white/20 rounded transition-colors" style={{ color: "#00cc00" }}>Accept Invite</button>
               </div>
             </div>
           </motion.div>

@@ -1,0 +1,145 @@
+[
+  {"style":"royal","title":"A New Journey Begins","message":"Dear {name}, with great joy we welcome you to {college}. Your journey of learning, friendships, achievements and unforgettable memories begins today. May every step lead you closer to your dreams. ✨"},
+  {"style":"minimal","title":"Welcome to New Horizons","message":"{name}, your presence adds a new story to the legacy of {college}. Let this journey be filled with curiosity, innovation, friendship and endless possibilities."},
+  {"style":"inspirational","title":"The Next Chapter Awaits","message":"The pages before you are still blank, {name}. At {college}, you hold the pen. Write boldly, learn deeply and let every day become a chapter worth remembering. 🌟"},
+  {"style":"inspirational","title":"Dream • Learn • Achieve","message":"Three simple words, one extraordinary path. {name}, may {college} be the place where your dreams find direction, your curiosity finds answers and your effort finds its reward. 🎓"},
+  {"style":"minimal","title":"Step Into Your Future","message":"The door is open, {name}. Beyond it lie new ideas, new friends and a version of you that is yet to be discovered. {college} is honoured to walk beside you."},
+  {"style":"royal","title":"An Honour to Welcome You","message":"It is with distinguished pleasure that {college} receives {name} into its halls. May your time here be marked by grace, wisdom and achievements worthy of a bright legacy. 🎓"},
+  {"style":"magical","title":"Where Dreams Take Flight","message":"Somewhere between the first lecture and the last sunset on campus, {name}, your dreams will learn to fly. {college} is delighted to be the sky they rise in. 💫"},
+  {"style":"festive","title":"Let the Celebrations Begin","message":"Cheers, confetti and open arms, {name}! {college} is celebrating you today. Bring your smile, your energy and your boldest hopes, because this is only the first day of something wonderful. 🎉"},
+  {"style":"cultural","title":"Blessings for a Bright Beginning","message":"With the blessings of knowledge and tradition, we welcome {name} to {college}. May wisdom guide your steps, humility shape your character and success follow your honest effort. 🌸"},
+  {"style":"magical","title":"Written in the Stars","message":"Long before today, {name}, the stars were quietly arranging this moment. {college} welcomes you to a story of discovery, friendship and light that is just beginning to unfold. ✨"},
+  {"style":"modern","title":"You Belong Here","message":"No introductions needed, {name}. You are already part of {college}. Come with your questions, your ideas and your unique voice, and help us shape what comes next."},
+  {"style":"royal","title":"A Seat Awaits You","message":"A seat has been reserved with care, {name}, in the grand story of {college}. Take your place with pride, for your journey is one we are eager to witness. 🌟"},
+  {"style":"inspirational","title":"Begin With Courage","message":"Every great achievement starts with a single brave step, {name}. Today you take yours at {college}. Trust yourself, stay curious and let courage carry you further than you imagined."},
+  {"style":"festive","title":"The Joy of a Fresh Start","message":"Fresh notebooks, new faces and a campus full of possibility! {name}, {college} cannot wait to share laughter, learning and countless joyful moments with you. 🌸"},
+  {"style":"minimal","title":"A Quiet Beginning","message":"Great journeys often start softly. {name}, as you enter {college}, may you find calm in the new, strength in the unknown and a place that feels like home."},
+  {"style":"magical","title":"Welcome to the Enchanted Chapter","message":"Once upon a time, {name}, a curious mind walked through the gates of {college}. What followed was a tale of wonder, friendship and dreams made real. Your tale begins now. 💫"},
+  {"style":"cultural","title":"The Lamp of Knowledge","message":"Today a new lamp is lit, {name}. May the light of learning at {college} brighten your path, warm your spirit and guide you towards a life of purpose and joy. 🌸"},
+  {"style":"modern","title":"Your Story. Your Campus.","message":"Big ideas need room to grow, {name}. {college} offers the space, the people and the spark. Your registration {usn} marks the start. What you build from here is entirely yours."},
+  {"style":"royal","title":"Crowned With Promise","message":"{name}, you arrive at {college} carrying a quiet crown of potential. Wear it with humility, polish it with effort and let it shine across every hall you walk through. ✨"},
+  {"style":"inspirational","title":"Rise, Learn, Inspire","message":"Learning is the beginning of everything you hope to become, {name}. At {college}, let each day lift you higher, and let your journey inspire those who walk behind you. 🎓"},
+  {"style":"festive","title":"A Grand Welcome Awaits","message":"The banners are up, the music is playing and the doors are wide open. Welcome to {college}, {name}! Let us celebrate you, your dreams and the incredible years that begin today. 🎉"},
+  {"style":"magical","title":"Under a Sky of Possibilities","message":"Look up, {name}. The sky above {college} holds more possibilities than you can count. Choose one, reach for it and let friendship and learning be your constellations. 🌟"},
+  {"style":"minimal","title":"Simply Welcome","message":"Welcome, {name}. Registered as {usn}, remembered as someone who chose to begin. {college} is glad you are here, and excited for all that you will become."},
+  {"style":"cultural","title":"A Heritage of Learning","message":"Generations of curious minds have shaped {college}, and today {name} joins that proud tradition. Carry its values forward with respect, discipline and a heart full of gratitude. 🌸"},
+  {"style":"inspirational","title":"Your Time Is Now","message":"Not someday, {name}. Now. This is the moment your effort meets opportunity at {college}. Seize it with gratitude, pursue it with passion and let it change you for the better."},
+  {"style":"modern","title":"Designed for Dreamers","message":"{college} was built for people like you, {name}: thinkers, makers and dreamers. Explore freely, collaborate boldly and turn ideas into things the world has not seen yet."},
+  {"style":"royal","title":"The Gates Are Open","message":"The great gates of {college} swing open in your honour, {name}. Enter with your head held high, for a distinguished journey of knowledge, character and success awaits within. 🎓"},
+  {"style":"festive","title":"Hello, Brand New Memories","message":"Late-night laughter, canteen conversations and friendships that last a lifetime. {name}, {college} is ready to help you make memories you will smile about for decades. 🌸"},
+  {"style":"magical","title":"A Spark Becomes a Flame","message":"Every brilliant fire begins with a spark, {name}. You are ours. Let {college} be the air that helps you glow, and watch your small beginnings turn into something radiant. 💫"},
+  {"style":"inspirational","title":"Where Effort Meets Excellence","message":"Talent opens the door, but dedication walks you through it. {name}, may your days at {college} be filled with patient effort, honest growth and the quiet joy of excellence."},
+  {"style":"minimal","title":"One Step Forward","message":"That is all it takes to begin. {name}, you have taken yours into {college}. Everything else, the lessons, the laughter and the leaps, will follow in time."},
+  {"style":"cultural","title":"With Gratitude and Grace","message":"With folded hands and a joyful heart, {college} welcomes {name} and family. May this new chapter be adorned with knowledge, kindness and the blessings of all who believe in you. 🌸"},
+  {"style":"modern","title":"Welcome to the Community","message":"You are not just a student, {name}. You are a voice in a growing community. {college} invites you to listen, to contribute and to find your people. ID {usn} is now part of our story."},
+  {"style":"royal","title":"In Celebration of Your Arrival","message":"Let it be known that {name} has arrived at {college}, bringing promise, spirit and a story yet to be told. We celebrate you with warmth, pride and great anticipation. ✨"},
+  {"style":"festive","title":"Cheers to Day One","message":"Raise your glass, or your coffee, {name}! Day one at {college} is here, and the best part is that there are hundreds of brilliant days waiting behind it. 🎉"},
+  {"style":"magical","title":"A Door Into Wonder","message":"Some doors lead to rooms, others to worlds. The one you just opened at {college} leads to wonder, {name}: new ideas, new friends and a future glowing at the edges. 💫"},
+  {"style":"inspirational","title":"Believe in the Beginning","message":"You may not yet know where this path leads, {name}, and that is perfectly fine. Believe in the beginning. {college} will help you grow into everything you are meant to be. 🌟"},
+  {"style":"minimal","title":"Make Room for More","message":"More ideas, more friends and more courage than you currently imagine. {name}, make room for it all as you begin your time at {college}."},
+  {"style":"cultural","title":"A Festival of Knowledge","message":"Like a festival of lights, a new academic year brings joy to every corner of {college}. {name}, may your days be bright, your mind inspired and your spirit forever curious. 🌸"},
+  {"style":"royal","title":"Distinguished Beginnings","message":"Every legacy has a first line. {name}, yours begins at {college} with the dignity of purpose and the elegance of ambition. We are proud to have you among us. 🎓"},
+  {"style":"modern","title":"Press Play on Your Future","message":"The playlist of your next few years is waiting, {name}. Late nights, breakthroughs and big laughs. {college} is ready when you are, so press play."},
+  {"style":"magical","title":"Moonlight and Possibility","message":"When the campus lights glow softly at night, {name}, you will realise how far you have come. For now, welcome to {college}, where every evening whispers of what is possible. ✨"},
+  {"style":"festive","title":"Welcome to the Family","message":"Big smiles and bigger hugs, {name}! {college} is more than a campus, it is a family. Come in, find your place and let the celebration of you begin. 🌟"},
+  {"style":"inspirational","title":"The Courage to Grow","message":"Growth asks for courage, and you have already shown it by arriving. {name}, let {college} challenge you gently, support you fully and celebrate every step you take."},
+  {"style":"minimal","title":"Clear Skies Ahead","message":"New days, open schedules and a mind ready to learn. {name}, the road ahead at {college} looks bright. Walk it at your own pace, and know that you are never alone."},
+  {"style":"cultural","title":"Roots and Wings","message":"{college} offers you both: roots in values and wings for ambition. {name}, may you grow with humility, soar with confidence and always remember where your learning began. 🌸"},
+  {"style":"royal","title":"A Legacy in the Making","message":"The halls of {college} have witnessed generations of greatness, and now they welcome {name}. Walk them with grace, and perhaps one day your name will be spoken among them. 🌟"},
+  {"style":"modern","title":"Curious by Design","message":"Ask more questions, {name}. Challenge assumptions. Try what has not been tried. {college} thrives on bold curiosity, and your voice will make our community richer."},
+  {"style":"magical","title":"A Story Waiting to Sparkle","message":"Hidden in the corridors of {college} is a story made just for you, {name}. Friendships, triumphs and quiet little miracles are already waiting to sparkle into being. 💫"},
+  {"style":"inspirational","title":"Today, Everything Is Possible","message":"{name}, today you stand at the start of everything. Every goal you carry and every dream you whisper can grow here. Welcome to {college}, where your best self begins to rise. 🎓"},
+  {"style":"festive","title":"The Best Is Yet to Come","message":"If today feels exciting, wait until you see what follows, {name}! {college} welcomes you with open arms and a heart full of cheer. Let the unforgettable years begin! 🎉"}
+]
+```
+
+## Integration prompt for your coding agent
+
+This prompt keeps Three.js in the project, so it supersedes the earlier step that removed those packages.
+
+```
+ROLE
+Senior Next.js/React/TypeScript + React Three Fiber engineer working in the
+TEMPLATE repository. Integrate a premium invitation-message system into the
+3D digital invitation card experience at /f/[id].
+
+DATA
+- Save the 50 invitations as src/data/invitations.json. Each entry:
+  { style: "royal"|"minimal"|"inspirational"|"festive"|"cultural"|"magical"|"modern",
+    title: string, message: string }
+- Placeholders: {name}, {usn}, {college}. Add a typed helper
+  fillInvitation(item, { name, usn, college }) that replaces ALL occurrences,
+  and falls back to EVENT.college from src/config/event.ts if college is empty.
+- Define the Invitation type and validate the JSON at build time with
+  scripts/check-invitations.ts: assert 50 entries, unique titles, unique
+  messages, 30-80 words each, only the three allowed placeholders, and fail
+  if any unknown {placeholder} appears.
+
+RANDOM SELECTION
+- Create useRandomInvitation(): picks one random invitation on every page load
+  and every re-render trigger ("Experience Again"), never repeating the
+  immediately previous one (store lastInvitationIndex in sessionStorage).
+- Avoid hydration mismatches: render a neutral skeleton on the server, choose
+  the random item on the client (lazy useState initializer inside a
+  client-only component, or after mount via a key change). Do not call
+  setState synchronously inside useEffect (react-hooks/set-state-in-effect).
+- Do not use Math.random() during render; pick inside the initializer/handler.
+
+THREE.JS CARD
+- Render the title and message on the 3D card with drei <Text> (troika) or a
+  CanvasTexture. Wrap the message with maxWidth, centered alignment, generous
+  line-height, and auto-scale the font so 80 words always fit on a 360px-wide
+  phone without clipping.
+- Use style -> theme mapping to choose the card look:
+    royal: ivory + gold foil, serif;  minimal: white/black, thin sans;
+    inspirational: deep blue gradient + warm light;
+    festive: vibrant gradient + confetti particles;
+    cultural: saffron/maroon, ornamental border;
+    magical: midnight blue + stardust particles;  modern: glass/frosted.
+- Title in a display/serif font, message in a readable body font, student name
+  highlighted in the accent colour, USN shown small as "Fresher No. {usn}"
+  when not already in the message. Emoji decorations render fine in <Text>
+  only with a fallback font; if they don't, strip them from the 3D text and
+  show them as decorative sprites around the card.
+- Animation: card opens (fold/flip or envelope), message lines fade in
+  sequentially, soft idle float, pointer/gyroscope tilt with gentle auto-tilt
+  fallback. Respect prefers-reduced-motion (show the finished card).
+- Performance: dpr={[1,1.5]}, shared geometries/materials, no per-frame
+  allocations, pause the loop when the tab is hidden, load the Canvas with
+  next/dynamic ssr:false.
+
+ACCESSIBILITY AND FALLBACK
+- Mirror the title and message as real DOM text (visually hidden, aria-live=
+  "polite") so screen readers and SEO have it. If WebGL is unavailable, show a
+  styled 2D card with the same content.
+
+UI
+- Below the card: [ SAVE CARD AS IMAGE ] [ SHARE ] [ EXPERIENCE AGAIN ]
+  [ RETURN HOME ], large and stacked on mobile.
+- EXPERIENCE AGAIN changes a React key so a new invitation and a new template
+  are picked and the animation restarts cleanly.
+
+VERIFY
+npm run lint && npx tsc --noEmit && npm run build && npx tsx scripts/check-invitations.ts
+Report: Lint, TypeScript, Build, Invitations validated X/50, Mobile checked
+at 360x640 and 390x844, Remaining issues. Never report PASS without running
+the commands.
+```
+
+**Notes**
+- Put your real college name in `src/config/event.ts` so `{college}` fills correctly.
+- Emojis can break in some Three.js text fonts, which is why the prompt has a fallback for them.
+- If you also want a **unique invitation per template** (as in the previous step), tell me. I can map these 50 to the 20 templates by `style`, so a royal template only shows royal messages.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-03T21:37:40+05:30.
+
+The user's current state is as follows:
+Active Document: c:\Users\deeks\Downloads\template\TODO_EVENT.md (LANGUAGE_MARKDOWN)
+Cursor is on line: 10
+Other open documents:
+- c:\Users\deeks\Downloads\template\src\config\event.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\deeks\Downloads\template\package.json (LANGUAGE_JSON)
+- c:\Users\deeks\Downloads\template\src\data\templates.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\deeks\Downloads\template\src\app\globals.css (LANGUAGE_CSS)
+- c:\Users\deeks\Downloads\template\src\app\f\[id]
